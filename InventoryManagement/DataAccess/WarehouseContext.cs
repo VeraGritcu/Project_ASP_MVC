@@ -17,12 +17,12 @@ namespace DataAccess
             optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
         }
 
-        protected
-            override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Products>()
              .HasOne(p => p.Category);
         }
+
         //entities
         public DbSet<Products> Products { get; set; }
 
