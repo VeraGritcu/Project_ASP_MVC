@@ -4,9 +4,9 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1>Creeaza</h1>
 
-<h4>Products</h4>
+<h4>Produse</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -33,14 +33,20 @@
                 <span asp-validation-for="Unit" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <label asp-for="Category" class="control-label"></label>
+                @Html.DropDownListFor(m => m.Category.Id,
+                    new SelectList(ViewBag.Categories, "Id", "Name"), new { @class = "form-control" })
+                <span asp-validation-for="Category" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Creeaza" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Inapoi la lista</a>
 </div>
 
 @section Scripts {

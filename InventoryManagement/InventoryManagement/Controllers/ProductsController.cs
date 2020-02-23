@@ -15,9 +15,19 @@ namespace InventoryManagement.Controllers
         {
             this._context = context;
         }
-        public IActionResult Index()
+        public IActionResult Index(int? categoryID)
         {
-            var produse = _context.Products.Include(p => p.Category).ToList();
+            List<Products> produse;
+
+            if (categoryID.HasValue)
+            {
+                produse = _context.Products.Include(p => p.Category)
+                    .Where(p=>p.Category.Id == categoryID).ToList();
+            }
+            else
+            {
+                produse = _context.Products.Include(p => p.Category).ToList();
+            }
 
             ViewData["Mesaj"] = "Aveti in baza de date " + produse.Count + " produse";
 
@@ -38,6 +48,9 @@ namespace InventoryManagement.Controllers
             {
                 return NotFound();
             }
+            var allCategories = this._context.Category.ToList();
+
+            this.ViewBag.Categories = allCategories;
             return View(products);
         }
 
@@ -46,9 +59,9 @@ namespace InventoryManagement.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Products products)
+        public async Task<IActionResult> Edit(int id, Products product)
         {
-            if (id != products.Id)
+            if (id != product.Id)
             {
                 return NotFound();
             }
@@ -57,13 +70,15 @@ namespace InventoryManagement.Controllers
             {
                 try
                 {
-                    _context.Update(products);
+                    _context.Update(product);
+
+                    _context.Entry(product.Category).State = EntityState.Unchanged;
 
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProductsExists(products.Id))
+                    if (!ProductsExists(product.Id))
                     {
                         return NotFound();
                     }
@@ -74,7 +89,11 @@ namespace InventoryManagement.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(products);
+            var allCategories = this._context.Category.ToList();
+
+            this.ViewBag.Categories = allCategories;
+
+            return View(product);
         }
 
         private bool ProductsExists(int id)
@@ -85,19 +104,32 @@ namespace InventoryManagement.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            var allCategories = this._context.Category.ToList();
+
+            this.ViewBag.Categories = allCategories;
+
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Products products)
+        public async Task<IActionResult> Create(Products product)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(products);
+                _context.Add(product);
+
+                _context.Entry(product.Category).State = EntityState.Unchanged;
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(products);
+            else
+            {
+                var allCategories = this._context.Category.ToList();
+                this.ViewBag.Categories = allCategories;
+            }
+
+            return View(product);
         }
 
         public IActionResult Details(int id)
@@ -108,6 +140,9 @@ namespace InventoryManagement.Controllers
             {
                 return NotFound();
             }
+            var allCategories = this._context.Category.ToList();
+
+            this.ViewBag.Categories = allCategories;
 
             return View(product);
         }

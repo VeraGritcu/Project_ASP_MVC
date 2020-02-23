@@ -1,8 +1,29 @@
-﻿@{
+﻿@model List<DataAccess.Category>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+    <div class="text-center">
+        <h1 class="display-4">Bine ati venit!</h1>
+        <table class="text-center">
+            <tr>
+                @foreach (var item in Model)
+                {
+                    <td>
+                        <a href="Products/index?categoryid=@item.Id">
+                            <img border="20" alt="categories" src="@item.Description" width="210" height="210">
+                        </a>
+
+                    </td>
+                }
+            </tr>
+            <tr>
+                @foreach (var item in Model)
+                {
+                    <td align="center">@item.Name</td>
+                }
+
+            </tr>
+        </table>
+    </div>

@@ -24,8 +24,9 @@ namespace InventoryManagement.Controllers
 
         public IActionResult Index()
         {
-           
-            return View();
+            var allCategories = this._context.Category.ToList();
+
+            return View(allCategories);
         }
 
         public IActionResult Privacy()

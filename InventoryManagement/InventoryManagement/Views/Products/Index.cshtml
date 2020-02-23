@@ -9,7 +9,8 @@
     @ViewData["Mesaj"]
 </p>
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Creeaza un produs nou</a> | 
+    <a asp-action="Index" asp-controller="Home">Inapoi acasa</a>
 </p>
 <table class="table">
     <thead>
@@ -26,7 +27,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Unit)
             </th>
-            <th></th>
+            <th>@Html.DisplayNameFor(model=>model.Category)</th>
         </tr>
     </thead>
     <tbody>
@@ -44,10 +45,11 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Unit)
             </td>
+            <td>@Html.DisplayFor(modelItem =>item.Category.Name)</td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.Id">Editeaza</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Vezi detalii</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Sterge</a>
             </td>
         </tr>
 }
